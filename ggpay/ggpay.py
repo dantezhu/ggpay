@@ -38,7 +38,8 @@ class GGPay(object):
         
     def verify_bill(self, bill_id, package_name, product_id, purchase_token):
         """
-        判断是否合法
+        判断订单是否合法
+        需要注意，客户端在调用支付的时候需要把 bill_id 传给 extra 字段
         文档: https://developers.google.com/android-publisher/api-ref/purchases/products/get?hl=zh
         """
         logger.debug('purchase check start.bill_id: %s', bill_id)
