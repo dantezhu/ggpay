@@ -57,6 +57,10 @@ class GGPay(object):
             access_token=self.access_token,
         ))
 
+        if not rsp.ok:
+            logger.error('purchase invalid. status_code: %s, rsp: %s', rsp.status_code, rsp.text)
+            return False
+
         jdata = rsp.json()
 
         if 'purchaseState' not in jdata:
