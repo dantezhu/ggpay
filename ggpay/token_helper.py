@@ -3,6 +3,7 @@
 import urllib
 import requests
 
+
 class TokenHelper(object):
     """用来生成token的工具"""
 
@@ -37,8 +38,6 @@ class TokenHelper(object):
         """登录之后，获取access_token
         """
         base_url = 'https://accounts.google.com/o/oauth2/token'
-
-        code = '4/S8ujv0LEXFFdNuL39zb-YSQTLb2Q.EgulAakaR6AUXE-sT2ZLcbQL4XorigI'
 
         data = dict(
             grant_type='authorization_code',
