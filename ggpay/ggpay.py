@@ -122,7 +122,7 @@ class GGPay(object):
             logger.error('purchase invalid.bill_id: %s jdata: %s', bill_id, jdata)
             return False
 
-        if jdata['purchaseState'] == 0 and jdata['developerPayload'] == str(bill_id):
+        if jdata['purchaseState'] == 0 and str(jdata['developerPayload']) == str(bill_id):
             logger.error('purchase valid.bill_id: %s jdata: %s', bill_id, jdata)
             return True
         else:

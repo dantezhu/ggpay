@@ -3,7 +3,7 @@
 from setuptools import setup, find_packages
 setup(
     name="ggpay",
-    version="0.1.5",
+    version="0.1.6",
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
     install_requires=['requests'],
     scripts=[],
