@@ -20,10 +20,10 @@ google支付订单验证工具，包括一些辅助方法
 4. 修改 test_token.py 中的 step_index = 2, 并将 code 参数为刚才的参数，获取到access_token 以及 refresh_token 之类的数据。
 返回结果:
 {
-    u'access_token': u'ya29.xwEFH0HUrmyBpa3Fb5bVK4q01QNtm9_EqyOD_URc2jsNT0TTwRPV9ZZ0VQEk4yCIVuu5', 
+    u'access_token': u'ya29.xwEFH0HUrmyxxx3Fb5bVK4q01QNtm9_EqyOD_URc2jsNT0TTwRPV9ZZ0VQEk4yCIVuu5', 
     u'token_type': u'Bearer', 
     u'expires_in': 3600, 
-    u'refresh_token': u'1/31LHsuI-1-senxWCn77NMduH7V5_cULy3dw_qXLmA14'
+    u'refresh_token': u'1/31LHsuI-1-xxxxWCn77NMduH7V5_cULy3dw_qXLmA14'
 }
 
 此时获取的access_token其实没什么用，因为这个access_token会自动过去，真正用的access_token是用refresh_token兑换来的
