@@ -19,6 +19,7 @@
 """
 
 import logging
+import datetime
 import requests
 
 logger = logging.getLogger('ggpay')
@@ -31,11 +32,60 @@ class GGPay(object):
     client_secret = None
     access_token = None
 
-    def __init__(self, client_id, client_secret, access_token):
+    refresh_token = None
+    access_token_create_time = None
+    access_token_expire_time = None
+
+    def __init__(self, client_id, client_secret, refresh_token):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.access_token = access_token
-        
+        self.refresh_token = refresh_token
+
+    def alloc_new_access_token(self):
+        """
+        通过refresh_token获取access token
+        """
+
+        base_url = 'https://accounts.google.com/o/oauth2/token'
+
+        data = dict(
+            grant_type='refresh_token',
+            client_id=self.client_id,
+            client_secret=self.client_secret,
+            refresh_token=self.refresh_token,
+            )
+
+        try:
+            rsp = requests.post(base_url, data=data)
+            jdata = rsp.json()
+
+            if 'access_token' in jdata:
+                self.access_token = jdata['access_token']
+                self.access_token_create_time = datetime.datetime.now()
+                self.access_token_expire_time = self.access_token_create_time + datetime.timedelta(
+                    seconds=jdata['expires_in'] * 2 / 3
+                )
+                return True
+            else:
+                logger.error('no access_token: %s', rsp.text)
+                return False
+        except:
+            logger.error('exc occur.', exc_info=True)
+            return False
+
+    def should_alloc_new_access_token(self):
+        """
+        判断是否要重新获取access_token
+        """
+        if not self.access_token:
+            return True
+
+        now = datetime.datetime.now()
+        if now >= self.access_token_expire_time:
+            return True
+
+        return False
+
     def verify_bill(self, bill_id, package_name, product_id, purchase_token):
         """
         判断订单是否合法
@@ -43,6 +93,10 @@ class GGPay(object):
         文档: https://developers.google.com/android-publisher/api-ref/purchases/products/get?hl=zh
         """
         logger.debug('purchase check start.bill_id: %s', bill_id)
+
+        if self.should_alloc_new_access_token():
+            if not self.alloc_new_access_token():
+                return False
 
         # 这是老版
         # url_tpl = 'https://www.googleapis.com/androidpublisher/v1.1/applications/{packageName}/inapp/{productId}/purchases/{token}'
