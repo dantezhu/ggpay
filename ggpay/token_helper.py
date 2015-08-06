@@ -28,6 +28,7 @@ class TokenHelper(object):
             access_type='offline',
             client_id=self.client_id,
             redirect_uri=self.redirect_uri,
+            approval_prompt='force',  # 加了这个参数，code才能兑换出refresh token。提示会增加一个离线访问权限
         )
 
         url = base_url + '?' + urllib.urlencode(params)
