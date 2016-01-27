@@ -26,6 +26,6 @@ google支付订单验证工具，包括一些辅助方法
     u'refresh_token': u'1/31LHsuI-1-xxxxWCn77NMduH7V5_cULy3dw_qXLmA14'
 }
 
-此时获取的access_token其实没什么用，因为这个access_token会自动过去，真正用的access_token是用refresh_token兑换来的
+此时获取的access_token其实没什么用，因为这个access_token会自动过期，真正用的access_token是用refresh_token兑换来的
 
 5. 调用 test_verify_bill 来做验证
