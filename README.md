@@ -6,7 +6,7 @@ google支付订单验证工具，包括一些辅助方法
 1. 去google developer api后台(https://console.developers.google.com/)
 
     1. 创建 project
-    2. 创建 web application
+    2. 创建 web application。注意配置的 Authorized redirect URIs，必须与 test_token.py 中配置的一模一样，包括/
     3. 授权 google developer api
     4. 关联google play和该project
 
