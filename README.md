@@ -3,7 +3,7 @@ google支付订单验证工具，包括一些辅助方法
 
 ### 使用说明
 
-1. 去google developer api后台
+1. 去google developer api后台(https://console.developers.google.com/)
 
     1. 创建 project
     2. 创建 web application
