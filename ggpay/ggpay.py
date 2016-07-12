@@ -56,7 +56,7 @@ class GGPay(object):
             )
 
         try:
-            rsp = requests.post(base_url, data=data)
+            rsp = requests.post(base_url, data=data, verify=False)
             jdata = rsp.json()
 
             if 'access_token' in jdata:
@@ -110,7 +110,7 @@ class GGPay(object):
 
         rsp = requests.get(url, params=dict(
             access_token=self.access_token,
-        ))
+        ), verify=False)
 
         if not rsp.ok:
             logger.error('purchase invalid. status_code: %s, rsp: %s', rsp.status_code, rsp.text)
