@@ -48,6 +48,6 @@ class TokenHelper(object):
             redirect_uri=self.redirect_uri,
         )
 
-        rsp = requests.post(base_url, data=data)
+        rsp = requests.post(base_url, data=data, verify=False)
 
         return rsp.json()
