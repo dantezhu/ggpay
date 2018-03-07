@@ -7,8 +7,9 @@ google支付订单验证工具，包括一些辅助方法
 
     1. 创建 project
     2. 进入创建好的project，找到 Google Play Android Developer API，并启用
-    3. 创建 凭据。依次选择 OAuth 客户端ID - 网页应用，注意配置的 Authorized redirect URIs(已获授权的重定向 URI)，必须与 test_token.py 中配置的一模一样，不能留空
+    3. 创建 凭据。依次选择 OAuth 客户端ID -> 网页应用，注意配置的 Authorized redirect URIs(已获授权的重定向 URI)，必须与 test_token.py 中配置的一模一样，不能留空
     4. 将生成的 client id 和 client secret 填入 test_token.py
+    5. 到 google play的应用详情页面，点击左侧 开发工具->服务和API，在右侧页面选择 在此应用中使用google play游戏服务，选择对应的project。之后配置完整即可，记得选择发布游戏。
 
 2. 先调用 test_token.py, 生成链接，放到浏览器中。
 
