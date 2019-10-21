@@ -89,6 +89,42 @@ class GGPay(object):
         判断订单是否合法
         需要注意，如果验证payload，需要客户端在调用支付的时候需要把 payload 赋值
         文档: https://developers.google.com/android-publisher/api-ref/purchases/products/get?hl=zh
+        http.rsp:
+            {
+              "kind": "androidpublisher#productPurchase",
+              "purchaseTimeMillis": long,
+              "purchaseState": integer,
+              "consumptionState": integer,
+              "developerPayload": string,
+              "orderId": string,
+              "purchaseType": integer,
+              "acknowledgementState": integer
+            }
+
+            Property name	Value	Description	Notes
+            acknowledgementState	integer	The acknowledgement state of the inapp product. Possible values are:
+            Yet to be acknowledged
+            Acknowledged
+            consumptionState	integer	The consumption state of the inapp product. Possible values are:
+            Yet to be consumed
+            Consumed
+            developerPayload	string	A developer-specified string that contains supplemental information about an order.
+            kind	string	This kind represents an inappPurchase object in the androidpublisher service.
+            orderId	string	The order id associated with the purchase of the inapp product.
+            purchaseState	integer	The purchase state of the order. Possible values are:
+            Purchased
+            Canceled
+            Pending
+            purchaseTimeMillis	long	The time the product was purchased, in milliseconds since the epoch (Jan 1, 1970).
+            purchaseType	integer	The type of purchase of the inapp product. This field is only set if this purchase was not made using the standard in-app billing flow. Possible values are:
+            Test (i.e. purchased from a license testing account)
+            Promo (i.e. purchased using a promo code)
+            Rewarded (i.e. from watching a video ad instead of paying)
+        :param package_name:
+        :param product_id:
+        :param purchase_token:
+        :param payload:
+        :return: 成功: Google订单ID；失败: False
         """
         logger.debug('purchase check start.')
 
@@ -121,10 +157,10 @@ class GGPay(object):
             return False
 
         if jdata['purchaseState'] == 0:
-            if payload is not None and str(jdata['developerPayload']) != str(payload):
+            if payload is not None and jdata['developerPayload'] != payload:
                 logger.error('purchase valid. jdata: %s, payload: %s', jdata, payload)
                 return False
-            return True
+            return jdata['orderId']
         else:
             logger.error('purchase valid. jdata: %s, payload: %s', jdata, payload)
             return False
