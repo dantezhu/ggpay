@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 #=============================================================================
 #
@@ -86,13 +84,13 @@ class GGPay(object):
 
         return False
 
-    def verify_bill(self, bill_id, package_name, product_id, purchase_token):
+    def verify_bill(self, package_name, product_id, purchase_token, payload=None):
         """
         判断订单是否合法
-        需要注意，客户端在调用支付的时候需要把 bill_id 传给 extra 字段
+        需要注意，如果验证payload，需要客户端在调用支付的时候需要把 payload 赋值
         文档: https://developers.google.com/android-publisher/api-ref/purchases/products/get?hl=zh
         """
-        logger.debug('purchase check start.bill_id: %s', bill_id)
+        logger.debug('purchase check start.')
 
         if self.should_alloc_new_access_token():
             if not self.alloc_new_access_token():
@@ -119,12 +117,14 @@ class GGPay(object):
         jdata = rsp.json()
 
         if 'purchaseState' not in jdata:
-            logger.error('purchase invalid.bill_id: %s jdata: %s', bill_id, jdata)
+            logger.error('purchase invalid. jdata: %s', jdata)
             return False
 
-        if jdata['purchaseState'] == 0 and str(jdata['developerPayload']) == str(bill_id):
-            logger.error('purchase valid.bill_id: %s jdata: %s', bill_id, jdata)
+        if jdata['purchaseState'] == 0:
+            if payload is not None and str(jdata['developerPayload']) != str(payload):
+                logger.error('purchase valid. jdata: %s, payload: %s', jdata, payload)
+                return False
             return True
         else:
-            logger.error('purchase invalid.bill_id: %s jdata: %s', bill_id, jdata)
+            logger.error('purchase valid. jdata: %s, payload: %s', jdata, payload)
             return False
