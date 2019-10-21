@@ -15,7 +15,7 @@ step_index = 1
 
 if step_index == 1:
     # 先拿到这个url，去浏览器里登录
-    print helper.make_login_url()
+    print(helper.make_login_url())
 elif step_index == 2:
     code = ''
-    print helper.get_token(code)
+    print(helper.get_token(code))

@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import requests
 
 
@@ -31,7 +29,7 @@ class TokenHelper(object):
             approval_prompt='force',  # 加了这个参数，code才能兑换出refresh token。提示会增加一个离线访问权限
         )
 
-        url = base_url + '?' + urllib.urlencode(params)
+        url = base_url + '?' + urllib.parse.urlencode(params)
 
         return url
 
