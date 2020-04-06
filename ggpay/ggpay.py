@@ -87,7 +87,7 @@ class GGPay(object):
     def verify_bill(self, package_name, product_id, purchase_token, payload=None):
         """
         判断订单是否合法
-        需要注意，如果验证payload，需要客户端在调用支付的时候需要把 payload 赋值
+        需要注意，如果验证payload，需要客户端在调用支付的时候需要把 developerPayload 赋值。并且这里的payload参数类型为str类型
         文档: https://developers.google.com/android-publisher/api-ref/purchases/products/get?hl=zh
         http.rsp:
             {
@@ -123,14 +123,14 @@ class GGPay(object):
         :param package_name:
         :param product_id:
         :param purchase_token:
-        :param payload:
-        :return: 成功: Google订单ID；失败: False
+        :param payload: 需要与客户端的 developerPayload 一致，并且为str类型
+        :return: (succ, rsp)。如果成功，可以通过rsp['orderId']获取Google订单ID
         """
         logger.debug('purchase check start.')
 
         if self.should_alloc_new_access_token():
             if not self.alloc_new_access_token():
-                return False
+                return False, None
 
         # 这是老版
         # url_tpl = 'https://www.googleapis.com/androidpublisher/v1.1/applications/{packageName}/inapp/{productId}/purchases/{token}'
@@ -148,19 +148,18 @@ class GGPay(object):
 
         if not rsp.ok:
             logger.error('purchase invalid. status_code: %s, rsp: %s', rsp.status_code, rsp.text)
-            return False
+            return False, None
 
-        jdata = rsp.json()
+        rsp_data = rsp.json()
 
-        if 'purchaseState' not in jdata:
-            logger.error('purchase invalid. jdata: %s', jdata)
-            return False
+        purchase_state = rsp_data.get('purchaseState')
 
-        if jdata['purchaseState'] == 0:
-            if payload is not None and jdata['developerPayload'] != payload:
-                logger.error('purchase valid. jdata: %s, payload: %s', jdata, payload)
-                return False
-            return jdata['orderId']
-        else:
-            logger.error('purchase valid. jdata: %s, payload: %s', jdata, payload)
-            return False
+        if purchase_state != 0:
+            logger.error('purchase state valid. rsp_data: %s, payload: %s', rsp_data, payload)
+            return False, rsp_data
+
+        if payload is not None and rsp_data['developerPayload'] != payload:
+            logger.error('purchase payload valid. rsp_data: %s, payload: %s', rsp_data, payload)
+            return False, rsp_data
+
+        return True, rsp_data
