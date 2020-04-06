@@ -30,3 +30,12 @@ google支付订单验证工具，包括一些辅助方法
 此时获取的access_token其实没什么用，因为这个access_token会自动过期，真正用的access_token是用refresh_token兑换来的
 
 5. 调用 test_verify_bill 来做验证
+
+
+### 参考链接
+    
+验证支付:  
+    https://developers.google.com/android-publisher/api-ref/purchases/products/get
+
+身份认证:  
+    https://developers.google.com/android-publisher/authorization

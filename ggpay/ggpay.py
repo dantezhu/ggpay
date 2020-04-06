@@ -134,7 +134,7 @@ class GGPay(object):
 
         # 这是老版
         # url_tpl = 'https://www.googleapis.com/androidpublisher/v1.1/applications/{packageName}/inapp/{productId}/purchases/{token}'
-        url_tpl = 'https://www.googleapis.com/androidpublisher/v2/applications/{packageName}/purchases/products/{productId}/tokens/{token}'
+        url_tpl = 'https://www.googleapis.com/androidpublisher/v3/applications/{packageName}/purchases/products/{productId}/tokens/{token}'
 
         url = url_tpl.format(
             packageName=package_name,
